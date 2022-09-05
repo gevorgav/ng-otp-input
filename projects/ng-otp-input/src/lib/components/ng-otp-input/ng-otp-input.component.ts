@@ -45,6 +45,10 @@ export class NgOtpInputComponent implements OnInit, AfterViewInit {
     this.otpForm.valueChanges.subscribe((v:object)=>{
       this.keysPipe.transform(this.otpForm.controls).forEach((k) => {
         var val = this.otpForm.controls[k].value;
+        if (!this.validateNumber(val) && this.config.allowNumbersOnly) {
+          this.otpForm.controls[k]?.setValue('', {emitEvent: false});
+          return;
+        }
         if(val && val.length>1){
           if (val.length >= this.config.length) {
             this.setValue(val);
